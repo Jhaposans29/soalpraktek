@@ -16,8 +16,6 @@ public class PelangganResponse {
 
     private String id;
     
-    private String idPelanggan;
-    
     private String nama;
     
     private String alamat;

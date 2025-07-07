@@ -25,23 +25,22 @@ public class PelangganController {
     @Autowired
     private PelangganRepository pelangganRepository;
 
-    // 🔹 TAMPILKAN PAGE HTML DENGAN DATA
     @GetMapping("/")
     public String halamanIndex(Model model) {
         List<Pelanggan> pelangganList = pelangganService.getPelanggan();
         model.addAttribute("pelangganList", pelangganList);
+        model.addAttribute("isEdit", false);
         model.addAttribute("pelangganForm", new CreatePelangganRequest());
         return "index"; // templates/index.html
     }
 
-    // 🔹 SAVE DATA DARI FORM
+
     @PostMapping("/save")
     public String saveThymeleaf(@ModelAttribute("pelangganForm") CreatePelangganRequest form) {
         pelangganService.create(form);
         return "redirect:/";
     }
 
-    // 🔹 HAPUS DATA
     @GetMapping("/delete/{id}")
     public String deleteThymeleaf(@PathVariable String id) {
         pelangganRepository.deleteById(id);
@@ -52,8 +51,8 @@ public class PelangganController {
     public String editForm(@PathVariable String id, Model model) {
         Pelanggan pelanggan = pelangganRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Data tidak ditemukan"));
-
-        model.addAttribute("pelangganForm", pelanggan); // Tidak Optional!
+        model.addAttribute("pelangganForm", pelanggan);
+        model.addAttribute("isEdit", true);
         model.addAttribute("pelangganList", pelangganService.getPelanggan());
         return "index";
     }
@@ -71,22 +70,9 @@ public class PelangganController {
         return WebResponse.<PelangganResponse>builder().data(pelangganResponse).build();
     }
 
-    @PutMapping(
-            path = "/update-pelanggan",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public WebResponse<PelangganResponse> update(@RequestBody UpdatePelangganRequest request) {
-        PelangganResponse pelangganResponse = pelangganService.update(request);
-        return WebResponse.<PelangganResponse>builder()
-                .data(pelangganResponse)
-                .build();
-    }
-
-    @DeleteMapping("/delete-pelanggan/{pelangganId}")
-    @ResponseBody
-    public WebResponse<String> deleteApi(@PathVariable String pelangganId) {
-        pelangganService.delete(pelangganId);
-        return WebResponse.<String>builder().data("Successfully deleted").build();
+    @PostMapping("/update-pelanggan")
+    public String updatePelanggan(@ModelAttribute("pelangganForm") UpdatePelangganRequest form) {
+        pelangganService.update(form);
+        return "redirect:/";
     }
 }

@@ -20,8 +20,7 @@ import lombok.NoArgsConstructor;
 public class CreatePelangganRequest {
 
     @NotBlank(message = "ID Pelanggan harus terisi")
-
-    private String idPelanggan;
+    private String id;
 
     @NotBlank(message = "Nama harus terisi ")
     @Column(name = "nama")
@@ -35,7 +34,7 @@ public class CreatePelangganRequest {
 
     @NotNull(message = "Umur harus terisi")
     @Min(value = 0, message = "umur harus lebih dari 0")
-    private int umur;
+    private Integer umur;
 
     @NotBlank(message = "Pekerjaan harus terisi")
     private String pekerjaan;

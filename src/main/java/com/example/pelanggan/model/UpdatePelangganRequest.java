@@ -14,7 +14,7 @@ import lombok.Data;
 public class UpdatePelangganRequest {
 
     @NotNull(message = "ID harus terisi")
-    private String id; // Harus ada ID untuk update!
+    private String id;
 
     @NotBlank(message = "Nama harus terisi")
     private String nama;

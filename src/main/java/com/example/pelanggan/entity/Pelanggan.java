@@ -11,11 +11,9 @@ import lombok.*;
 @AllArgsConstructor
 public class Pelanggan {
 
+
     @Id
     private String id;
-
-    @Column(name = "id_pelanggan", unique = true)
-    private String idPelanggan;
 
     @Column(name = "nama")
     private String nama;
