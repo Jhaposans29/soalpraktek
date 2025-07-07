@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemeliharaan Data Pelanggan</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .container { padding: 20px; }
+        .content-wrapper { display: flex; flex-wrap: wrap; gap: 2rem; }
+        .form-section, .list-section { flex: 1; }
+        table { width: 100%; border-collapse: collapse; }
+        table, th, td { border: 1px solid #000; }
+        th, td { padding: 8px; text-align: left; }
+        textarea { width: 100%; height: 60px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>PEMELIHARAAN DATA PELANGGAN</h1>
+
+    <div class="content-wrapper">
+        <!-- Form Section -->
+        <div class="form-section">
+            <h3>Data Pelanggan</h3>
+            <form th:action="@{/save}" method="post" th:object="${pelangganForm}">
+
+                <div class="form-group">
+                    <label>Id Pelanggan</label>
+                    <input type="text" th:field="*{idPelanggan}" required/>
+                </div>
+                <div class="form-group">
+                    <label>Nama</label>
+                    <input type="text" th:field="*{nama}" required/>
+                </div>
+                <div class="form-group">
+                    <label>Alamat</label>
+                    <textarea th:field="*{alamat}" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Jenis Kelamin</label><br/>
+                    <label><input type="radio" th:field="*{jenisKelamin}" value="Laki-laki"/> Laki-laki</label>
+                    <label><input type="radio" th:field="*{jenisKelamin}" value="Perempuan"/> Perempuan</label>
+                </div>
+                <div class="form-group">
+                    <label>Umur</label>
+                    <input type="number" th:field="*{umur}" min="0" required/> tahun
+                </div>
+                <div class="form-group">
+                    <label>Pekerjaan</label>
+                    <select th:field="*{pekerjaan}" required>
+                        <option value="">Pilih Pekerjaan</option>
+                        <option value="ASN">ASN</option>
+                        <option value="SWASTA">SWASTA</option>
+                        <option value="BURUH">BURUH</option>
+                        <option value="LAINNYA">LAINNYA</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Penghasilan</label>
+                    <input type="number" th:field="*{penghasilan}" min="0" required/>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit">Save</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Table Section -->
+        <div class="list-section">
+            <h3>Daftar Pelanggan</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>ID Pelanggan</th>
+                    <th>Nama</th>
+                    <th>Alamat</th>
+                    <th>Pekerjaan</th>
+                    <th>Aksi</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="p, iter : ${pelangganList}">
+                    <td th:text="${iter.count}"></td>
+                    <td th:text="${p.idPelanggan}"></td>
+                    <td th:text="${p.nama}"></td>
+                    <td th:text="${p.alamat}"></td>
+                    <td th:text="${p.pekerjaan}"></td>
+                    <td>
+                        <a th:href="@{/edit/{id}(id=${p.id})}">Edit</a>
+                        |
+                        <a th:href="@{/delete/{id}(id=${p.id})}"
+                           onclick="return confirm('Yakin ingin menghapus?')">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
